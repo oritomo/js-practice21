@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    'use strict';
+
+    class Charactor {
+      constructor() {
+
+        //勇者のステータス
+        this.name = 'ロベルト・フィルミーノ';
+        this.hp = Math.floor(Math.random() * 200 + 100);
+        this.power = Math.floor(Math.random() * 200 + 100);
+
+
+        //敵のステータス
+        this.enemyname = 'ケイロル・ナバス';
+        this.enemyhp = Math.floor(Math.random() * 10 + 200);
+        this.enemyremainhp = this.enemyhp - this.power;
+        this.enemypower = Math.floor(Math.random() * 100 + 20);
+      }
+
+     
+      attack() {
+        if (this.enemyremainhp < 0) {
+          console.log(`あなたのHP：${this.hp} 敵のHP：${this.enemyhp}`);
+          console.log(`${this.name}は${this.enemyname}に${this.power}のダメージを与えた！`);
+          return console.log('あなたの勝ち！')
+        } else {
+          console.log(`あなたのHP：${this.hp}敵のHP：${this.enemyhp}`);
+          console.log(`${this.name}は${this.enemyname}に${this.power}のダメージを与えた！`);
+          console.log(`敵の残りHP：${this.enemyremainhp}`)
+        }
+
+
+      }
+
+    }
+    const charactor = new Charactor();
+    charactor.attack();
+
+
+
+
+  </script>
+</body>
+
+</html>
