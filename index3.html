@@ -11,40 +11,48 @@
   <script>
     'use strict';
 
-    class Charactor {
-      constructor() {
-
-        //勇者のステータス
-        this.name = 'ロベルト・フィルミーノ';
-        this.hp = Math.floor(Math.random() * 200 + 100);
-        this.power = Math.floor(Math.random() * 200 + 100);
-
-
-        //敵のステータス
-        this.enemyname = 'ケイロル・ナバス';
-        this.enemyhp = Math.floor(Math.random() * 10 + 200);
-        this.enemyremainhp = this.enemyhp - this.power;
-        this.enemypower = Math.floor(Math.random() * 100 + 20);
-      }
-
-     
-      attack() {
-        if (this.enemyremainhp < 0) {
-          console.log(`あなたのHP：${this.hp} 敵のHP：${this.enemyhp}`);
-          console.log(`${this.name}は${this.enemyname}に${this.power}のダメージを与えた！`);
-          return console.log('あなたの勝ち！')
-        } else {
-          console.log(`あなたのHP：${this.hp}敵のHP：${this.enemyhp}`);
-          console.log(`${this.name}は${this.enemyname}に${this.power}のダメージを与えた！`);
-          console.log(`敵の残りHP：${this.enemyremainhp}`)
-        }
-
-
-      }
-
+    //プレイヤーのステータス
+    const player = {
+      name: 'アンパンマン',
+      hp: Math.floor(Math.random() * 30 + 30),
+      power: Math.floor(Math.random() * 20 + 10),
+      defense: Math.floor(Math.random() * 10 + 10),
     }
-    const charactor = new Charactor();
-    charactor.attack();
+
+    //敵のステータス
+    const enemy = {
+      name: 'バイキンマン',
+      hp: Math.floor(Math.random() * 20 + 30),
+      power: Math.floor(Math.random() * 15 + 10),
+      defense: Math.floor(Math.random() * 20 + 10),
+    }
+
+    class Charactor {
+      constructor(status) {
+        this.name = status.name;
+        this.hp = status.hp;
+        this.power = status.power;
+        this.defense = status.defense;
+      }
+
+      attack(enemyName, enemyDefense) {
+        let attack = Math.max(this.power - enemyDefense, 1)
+        return `${enemyName}に${attack}のダメージを与えた！`
+      }
+
+      block(enemyPower) {
+        let block = Math.max(enemyPower - this.defense, 1)
+        return `${this.name}は${block}のダメージを受けた！`
+      }
+    }
+    const playercharactor = new Charactor(player);
+    const enemycharactor = new Charactor(enemy);
+
+    console.log(playercharactor.attack(enemycharactor.name, enemycharactor.defense));
+
+    console.log(playercharactor.block(enemycharactor.power));
+    console.log(playercharactor);
+    console.log(enemycharactor);
 
 
 
