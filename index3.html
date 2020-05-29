@@ -5,54 +5,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    main {
+      display: flex;
+      justify-content: space-between;
+      margin: 100px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 32px;
+
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 
 <body>
+  <main>
+    <div>
+      <img src="./img/atari.png" alt="">
+      <div class="box">
+        <button id="fight">たたかう</button>
+        <!-- <button id="guard">まもる</button> -->
+        <!-- <button id="run">にげる</button> -->
+      </div>
+    </div>
+    <div>
+      <img src="./img/kasa_golf.png" alt="">
+      <div class="box">
+        <!-- <button>たたかう</button>
+        <button>まもる</button>
+        <button>にげる</button> -->
+      </div>
+    </div>
+  </main>
   <script>
     'use strict';
+    const fight = document.getElementById('fight');
+    // const guard = document.getElementById('guard');
+    //const run = document.getElementById('run');
 
     //プレイヤーのステータス
     const player = {
       name: 'アンパンマン',
       hp: Math.floor(Math.random() * 30 + 30),
-      power: Math.floor(Math.random() * 20 + 10),
+      power: Math.floor(Math.random() * 40 + 10),
       defense: Math.floor(Math.random() * 10 + 10),
+      type: 'player'
     }
 
     //敵のステータス
     const enemy = {
       name: 'バイキンマン',
       hp: Math.floor(Math.random() * 20 + 30),
-      power: Math.floor(Math.random() * 15 + 10),
+      power: Math.floor(Math.random() * 20 + 10),
       defense: Math.floor(Math.random() * 20 + 10),
+      type: 'enemy'
     }
 
+    //キャラクター設定
     class Charactor {
       constructor(status) {
         this.name = status.name;
         this.hp = status.hp;
         this.power = status.power;
         this.defense = status.defense;
+        this.type = status.type;
+        this.flag = true;
       }
 
+      //攻撃メソッド
       attack(enemyName, enemyDefense) {
         let attack = Math.max(this.power - enemyDefense, 1)
-        return `${enemyName}に${attack}のダメージを与えた！`
+        return  `${enemyName}に${attack}のダメージを与えた！`;
+        // text2.textContent = `${enemyName}の残りHPは${enemyHp - attack}`
+        // text3.textContent = enemyHp - attack;
       }
 
+      //守備メソッド
       block(enemyPower) {
         let block = Math.max(enemyPower - this.defense, 1)
-        return `${this.name}は${block}のダメージを受けた！`
+        this.hp -= block;
+        if(this.hp <= 0){
+          this.flag = false;
+          if(this.type === 'enemy'){
+            console.log('モンスターを倒した！')
+          }else{
+            console.log('モンスターに負けてしまった・・・')
+          }
+        }
+        // text.textContent = `${this.name}は${block}のダメージを受けた！`;
+        // text2.textContent = `${this.name}の残りHPは${this.hp - block}`
       }
     }
+
     const playercharactor = new Charactor(player);
     const enemycharactor = new Charactor(enemy);
+    console.log(playercharactor)
+    console.log(enemycharactor)
+    
 
-    console.log(playercharactor.attack(enemycharactor.name, enemycharactor.defense));
 
-    console.log(playercharactor.block(enemycharactor.power));
-    console.log(playercharactor);
-    console.log(enemycharactor);
+
+    let turn = 0;
+    fight.addEventListener('click', () => {
+      while(enemycharactor.flag && playercharactor.flag){
+        ++turn;
+        console.log(`${turn}ターン目`);
+        console.log(`${playercharactor.name}の攻撃! ${playercharactor.attack(enemycharactor.name,enemycharactor.defense)}`);
+        enemycharactor.block(enemycharactor.power);
+        if(enemycharactor.flag === false){break;}
+        console.log(`${enemycharactor.name}の攻撃! ${enemycharactor.attack(playercharactor.name,playercharactor.defense)}`);
+        playercharactor.block(enemycharactor.power);
+        if(playercharactor.flag === false){break;}
+        console.log(`${playercharactor.name}の残り体力は${playercharactor.hp}だ！`);
+        console.log(`${enemycharactor.name}の残り体力は${enemycharactor.hp}だ！`);
+        console.log('次のターンへ')
+      }
+      
+    });
+
+    
 
 
 
